@@ -1,0 +1,64 @@
+{
+  "name": "@luizeduos/n8n-nodes-suhai",
+  "version": "0.1.0",
+  "description": "Node n8n para a API SOAP da Suhai Seguradora (consulta FIPE + cotação de seguro auto/moto).",
+  "keywords": [
+    "n8n-community-node-package",
+    "n8n",
+    "suhai",
+    "seguro",
+    "cotacao"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/luizeduos/n8n-nodes-suhai#readme",
+  "author": {
+    "name": "luizeduos"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luizeduos/n8n-nodes-suhai.git"
+  },
+  "bugs": {
+    "url": "https://github.com/luizeduos/n8n-nodes-suhai/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18.10"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && gulp build:icons",
+    "dev": "tsc --watch",
+    "lint": "eslint nodes credentials",
+    "lintfix": "eslint nodes credentials --fix"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/SuhaiApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/Suhai/Suhai.node.js"
+    ]
+  },
+  "dependencies": {
+    "fast-xml-parser": "^4.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.16.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-n8n-nodes-base": "^1.16.0",
+    "gulp": "^4.0.2",
+    "n8n-workflow": "*",
+    "typescript": "^5.5.0"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}
