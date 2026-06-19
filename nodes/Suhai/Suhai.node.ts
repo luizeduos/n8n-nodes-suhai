@@ -1,6 +1,5 @@
 import {
 	IExecuteFunctions,
-	IDataObject,
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription,
@@ -431,6 +430,9 @@ export class Suhai implements INodeType {
 						SOAPAction: '"suhaiseguradoracotacao.com.br:5155/VeiculosFipe/ConsultaVeiculos"',
 					},
 					body: consultaEnvelope,
+					// Impede que o n8n tente fazer parse automático da resposta:
+					// queremos o XML cru, byte a byte, como a Suhai devolveu.
+					json: false,
 				};
 
 				const consultaRaw = await this.helpers.httpRequest(consultaOptions);
@@ -507,6 +509,8 @@ export class Suhai implements INodeType {
 						SOAPAction: '"suhaiseguradoracotacao.com.br:5155/MultiCalculos/IncluirCotacaoSuhai"',
 					},
 					body: cotacaoEnvelope,
+					// Impede parse automático: retornamos o XML cru da cotação.
+					json: false,
 				};
 
 				const cotacaoRaw = await this.helpers.httpRequest(cotacaoOptions);
@@ -518,12 +522,12 @@ export class Suhai implements INodeType {
 					throw new NodeOperationError(this.getNode(), `SOAP Fault na IncluirCotacaoSuhai: ${JSON.stringify(fault)}`, { itemIndex: i });
 				}
 
-				const resultado = get(cotacaoBody, ['IncluirCotacaoSuhaiResponse', 'IncluirCotacaoSuhaiResult']);
-
+				// Retorna o XML cru, 100% fiel ao que a Suhai devolveu nas duas chamadas.
+				// Nenhum campo é descartado — o consumidor trata o XML como preferir.
 				returnData.push({
 					json: {
-						veiculo: { marca, modelo, codFipe, anoModelo, anoFabricacao },
-						cotacao: (resultado ?? cotacaoObj) as IDataObject,
+						consultaVeiculosXml: typeof consultaRaw === 'string' ? consultaRaw : String(consultaRaw),
+						cotacaoXml: typeof cotacaoRaw === 'string' ? cotacaoRaw : String(cotacaoRaw),
 					},
 					pairedItem: { item: i },
 				});

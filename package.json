@@ -1,6 +1,6 @@
 {
   "name": "@luizeduos/n8n-nodes-suhai",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Node n8n para a API SOAP da Suhai Seguradora (consulta FIPE + cotação de seguro auto/moto).",
   "keywords": [
     "n8n-community-node-package",
